@@ -25,7 +25,7 @@
           <panel-toolbar />
         </panel-header>
         <panel-body>
-          <vue-table
+          <VueTable
             class="vue-table"
             :is-static-mode="true"
             :columns="table.columns"
@@ -108,7 +108,6 @@ onMounted(async () => {
   await apiGetGameData().then((res) => {
     tableData.value = res;
 
-    /*
     setInterval(() => {
       tableData.value.forEach((game) => {
         game.numPeople += Math.floor(-5 + Math.random() * 20);
@@ -116,7 +115,6 @@ onMounted(async () => {
         game.numPeople = Math.min(200, game.numPeople);
       });
     }, 1000);
-    */
   });
 });
 
