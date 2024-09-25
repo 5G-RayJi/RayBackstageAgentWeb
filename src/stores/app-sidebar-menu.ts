@@ -9,6 +9,11 @@ export const useAppSidebarMenuStore = defineStore({
         is_header: true,
       },
       {
+        url: "/online_people",
+        icon: "fa fa-user",
+        title: "在線人數",
+      },
+      {
         url: "/dashboard",
         icon: "fa fa-sitemap",
         title: "Dashboard",

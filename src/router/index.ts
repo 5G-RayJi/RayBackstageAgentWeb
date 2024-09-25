@@ -4,7 +4,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: "/", component: () => import("../views/sites/LoginView.vue") },
-    { path: "/dashboard", component: () => import("../views/sites/DashboardView.vue") },
+    {
+      path: "/online_people",
+      component: () => import("../views/sites/OnlinePeopleView.vue"),
+    },
     { path: "/:pathMatch(.*)*", component: () => import("../views/Error.vue") },
     {
       path: "/dashboard/v1",
