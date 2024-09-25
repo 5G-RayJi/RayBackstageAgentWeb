@@ -9,7 +9,7 @@ export const useAppOptionStore = defineStore({
 			
 			appHeaderHide: false,
 			appHeaderFixed: true,
-			appHeaderInverse: false,
+			appHeaderInverse: true,
 			appHeaderSearchToggled: false,
 			appHeaderLanguageBar: false,
 			appHeaderMegaMenu: false,
