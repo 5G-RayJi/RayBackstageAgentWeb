@@ -3,7 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/", redirect: "/dashboard/v3" },
+    { path: "/", component: () => import("../views/sites/LoginView.vue") },
+    { path: "/dashboard", component: () => import("../views/sites/DashboardView.vue") },
     { path: "/:pathMatch(.*)*", component: () => import("../views/Error.vue") },
     {
       path: "/dashboard/v1",
