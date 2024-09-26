@@ -23,11 +23,10 @@ onMounted(() => {
   };
   Chart.defaults.plugins.tooltip.cornerRadius = 8;
   Chart.defaults.plugins.tooltip.titleMarginBottom = 6;
-  Chart.defaults.plugins.tooltip.color = appVariable.color.componentBg;
+  Chart.defaults.plugins.tooltip.color = "#000";
   Chart.defaults.plugins.tooltip.multiKeyBackground =
     appVariable.color.componentColor;
-  Chart.defaults.plugins.tooltip.backgroundColor =
-    appVariable.color.componentColor;
+  Chart.defaults.plugins.tooltip.backgroundColor = "#000";
   Chart.defaults.plugins.tooltip.titleFont.family =
     appVariable.font.bodyFontFamily;
   Chart.defaults.plugins.tooltip.titleFont.weight =
