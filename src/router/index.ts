@@ -8,6 +8,10 @@ const router = createRouter({
       path: "/online_people",
       component: () => import("../views/sites/OnlinePeopleView.vue"),
     },
+    {
+      path: "/chart_test",
+      component: () => import("../views/sites/ChartTestView.vue"),
+    },
     { path: "/:pathMatch(.*)*", component: () => import("../views/Error.vue") },
     {
       path: "/dashboard/v1",
