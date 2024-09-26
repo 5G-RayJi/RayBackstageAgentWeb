@@ -24,7 +24,8 @@ export default {
 		Chart.defaults.plugins.tooltip.boxPadding = 6;
 		Chart.defaults.scale.grid.color = appVariable.color.borderColor;
 		Chart.defaults.scale.beginAtZero = true;
-		
+		Chart.defaults.scale.ticks.backdropColor = 'rgba('+ appVariable.color.componentColorRgb + ', 0)';
+  
 		new Chart(this.$refs.canvas, {
 			type: this.$props.type,
 			data: this.$props.data,

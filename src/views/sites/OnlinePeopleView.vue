@@ -25,14 +25,21 @@
           <panel-toolbar />
         </panel-header>
         <panel-body>
-          <VueTable
-            class="vue-table"
-            :is-static-mode="true"
-            :columns="table.columns"
-            :rows="tableData"
-            :total="totalRecordCount"
-            :sortable="table.sortable"
-          />
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <VueTable
+                class="vue-table"
+                :is-static-mode="true"
+                :columns="table.columns"
+                :rows="tableData"
+                :total="totalRecordCount"
+                :sortable="table.sortable"
+              />
+            </div>
+            <div class="col-12 col-md-6">
+              <Chartjs :type="chart.type" :data="chart.data" />
+            </div>
+          </div>
         </panel-body>
       </panel>
       <!-- END panel -->
@@ -48,6 +55,8 @@
   </div>
 </template>
 
+<!------------------------------------------------------------------------------------------------->
+
 <script lang="ts" setup>
 //asd
 import { useAppOptionStore } from "@/stores/app-option";
@@ -57,6 +66,8 @@ import { onBeforeRouteLeave } from "vue-router";
 import { apiGetGameData } from "@/apis/GameData";
 import type { IGameData } from "@/apis/GameData";
 import VueTable from "../../components/plugins/VueTable.vue";
+import { useAppVariableStore } from "@/stores/app-variable";
+import Chartjs from "@/components/plugins/Chartjs.vue";
 
 const appOption = useAppOptionStore();
 
@@ -99,6 +110,37 @@ const table = ref({
   sortable: {
     order: "id",
     sort: "asc",
+  },
+});
+
+const appVariable = useAppVariableStore();
+const chartLabels = computed(() => {
+  return ["a", "b", "c"];
+});
+const chartData = computed(() => {
+  return [0.5, 0.5, 1];
+});
+const chart = ref({
+  type: "pie",
+  labels: chartLabels.value,
+  data: {
+    labels: chartLabels.value,
+    datasets: [
+      {
+        data: chartData.value,
+        backgroundColor: [
+          "rgba(" + appVariable.color.themeRgb + ", .5)",
+          "rgba(" + appVariable.color.redRgb + ", .2)" + ", .5)",
+          "rgba(" + appVariable.color.gray600Rgb + ", .5)",
+        ],
+        hoverBackgroundColor: [
+          appVariable.color.theme,
+          appVariable.color.red,
+          appVariable.color.gray900,
+        ],
+        borderWidth: 0,
+      },
+    ],
   },
 });
 
