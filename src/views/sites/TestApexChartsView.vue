@@ -3,32 +3,26 @@
 
   <div class="row">
     <div class="col-md-3">
-      <Apexcharts
+      <VueApexCharts
         type="line"
-        width="500"
+        :height="300"
         :options="line.options"
         :series="line.series"
-      ></Apexcharts>
+      ></VueApexCharts>
     </div>
     <div class="col-md-3">
-      <Apexcharts
+      <VueApexCharts
         type="area"
-        width="500"
+        :height="300"
         :options="area.options"
         :series="area.series"
-      ></Apexcharts>
-    </div>
-    <div class="col-md-3">
-      <Apexcharts
-        type="area"
-        width="500"
-        :options="bar.options"
-        :series="bar.series"
-      ></Apexcharts>
+      ></VueApexCharts>
     </div>
   </div>
 </template>
 <script setup>
+import VueApexCharts from "vue3-apexcharts";
+
 //line------------------------------------------------------------
 const line = ref({
   options: {

@@ -42,5 +42,9 @@ app.use(Vue3ProgressPlugin);
 app.use(PerfectScrollbarPlugin);
 app.use(VCalendar);
 
+//use無效
+import VueApexCharts from "vue3-apexcharts";
+app.use(VueApexCharts);
+
 app.config.globalProperties.emitter = emitter;
 app.mount("#app");
