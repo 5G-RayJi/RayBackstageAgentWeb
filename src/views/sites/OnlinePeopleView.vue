@@ -180,6 +180,8 @@ const hexToRgb = (hex: string) => {
     : null;
 };
 
+const intervalID = ref(-1);
+
 onMounted(async () => {
   appOption.appContentFullHeight = true;
   appOption.appContentClass = "p-0";
@@ -210,7 +212,7 @@ onMounted(async () => {
     });
 
     //定時更新
-    setInterval(() => {
+    intervalID.value = setInterval(() => {
       //隨機增加人數
       let numGame: number = tableData.value.length;
       for (let i: number = 0; i < numGame; ++i) {
@@ -231,5 +233,6 @@ onMounted(async () => {
 onBeforeRouteLeave(() => {
   appOption.appContentFullHeight = false;
   appOption.appContentClass = "";
+  clearInterval(intervalID.value);
 });
 </script>
