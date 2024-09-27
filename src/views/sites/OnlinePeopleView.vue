@@ -36,8 +36,8 @@
                 :sortable="table.sortable"
               />
             </div>
-            <div class="col-12 col-md-6">
-              <Chartjs :type="chart.type" :data="chart.data" />
+            <div class="col-12 col-md-3">
+              <canvas ref="chartItem" />
             </div>
           </div>
         </panel-body>
@@ -65,9 +65,10 @@ import { ref, computed, onMounted } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
 import { apiGetGameData } from "@/apis/GameData";
 import type { IGameData } from "@/apis/GameData";
-import VueTable from "../../components/plugins/VueTable.vue";
 import { useAppVariableStore } from "@/stores/app-variable";
-import Chartjs from "@/components/plugins/Chartjs.vue";
+import Chart, { UpdateModeEnum } from "chart.js/auto";
+import type { ChartTypeRegistry, ChartConfiguration } from "chart.js";
+import type { ChartOptions } from "chart.js";
 
 const appOption = useAppOptionStore();
 
@@ -117,45 +118,112 @@ const appVariable = useAppVariableStore();
 const chartLabels = computed(() => {
   return ["a", "b", "c"];
 });
+
 const chartData = computed(() => {
-  return [0.5, 0.5, 1];
+  return [1, 0.5, 1];
 });
-const chart = ref({
+
+const chartDataSet = ref();
+
+const chartConfig = ref<ChartConfiguration>({
   type: "pie",
-  labels: chartLabels.value,
   data: {
-    labels: chartLabels.value,
+    labels: [],
     datasets: [
       {
-        data: chartData.value,
-        backgroundColor: [
-          "rgba(" + appVariable.color.themeRgb + ", .5)",
-          "rgba(" + appVariable.color.redRgb + ", .2)" + ", .5)",
-          "rgba(" + appVariable.color.gray600Rgb + ", .5)",
-        ],
-        hoverBackgroundColor: [
-          appVariable.color.theme,
-          appVariable.color.red,
-          appVariable.color.gray900,
-        ],
+        data: [],
+        backgroundColor: [],
+        hoverBackgroundColor: [],
         borderWidth: 0,
       },
     ],
   },
 });
 
+const chartOptions = ref<ChartOptions>({
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+});
+//圖表實體參照
+const chartItem = ref();
+//圖表實體
+let chartInstance: Chart;
+
+const getRandomHexColor = () => {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+const getRandomRgbColor = () => {
+  return {
+    r: Math.floor(Math.random() * 255),
+    g: Math.floor(Math.random() * 255),
+    b: Math.floor(Math.random() * 255),
+  };
+};
+
+const hexToRgb = (hex: string) => {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
+};
+
 onMounted(async () => {
   appOption.appContentFullHeight = true;
   appOption.appContentClass = "p-0";
+
   await apiGetGameData().then((res) => {
     tableData.value = res;
 
+    //設定資料
+    tableData.value.forEach((game) => {
+      //標題
+      chartConfig.value.data.labels?.push(game.name);
+      let dataSet = chartConfig.value.data.datasets[0];
+      dataSet.data.push(game.numPeople);
+      let color = getRandomRgbColor();
+      dataSet.backgroundColor.push(
+        `rgba(${color.r},${color.g},${color.b},0.5)`
+      );
+      dataSet.hoverBackgroundColor.push(
+        `rgba(${color.r},${color.g},${color.b},1)`
+      );
+    }, this);
+
+    //繪製圖表
+    chartInstance = new Chart(chartItem.value, {
+      type: <keyof ChartTypeRegistry>chartConfig.value.type,
+      options: chartOptions.value,
+      data: chartConfig.value.data,
+    });
+
+    //定時更新
     setInterval(() => {
-      tableData.value.forEach((game) => {
-        game.numPeople += Math.floor(-5 + Math.random() * 20);
+      //隨機增加人數
+      let numGame: number = tableData.value.length;
+      for (let i: number = 0; i < numGame; ++i) {
+        let game: IGameData = tableData.value[i];
+        game.numPeople = Math.floor(Math.random() * 20);
         game.numPeople = Math.max(0, game.numPeople);
         game.numPeople = Math.min(200, game.numPeople);
-      });
+
+        //更新chart資料
+        chartConfig.value.data.datasets[0].data[i] = game.numPeople;
+      }
+
+      chartInstance.update();
     }, 1000);
   });
 });
