@@ -15,8 +15,13 @@ export const useAppSidebarMenuStore = defineStore({
       },
       {
         url: "/chart_test",
-        icon: "fa fa-user",
-        title: "圖表測試",
+        icon: "fa-solid fa-chart-pie",
+        title: "ChartJs測試",
+      },
+      {
+        url: "/test_apex_chart",
+        icon: "fa fa-chart-line",
+        title: "ApexChart測試",
       },
       {
         url: "/dashboard",

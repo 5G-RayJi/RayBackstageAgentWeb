@@ -12,6 +12,10 @@ const router = createRouter({
       path: "/chart_test",
       component: () => import("../views/sites/ChartTestView.vue"),
     },
+    {
+      path: "/test_apex_chart",
+      component: () => import("../views/sites/TestApexChartsView.vue"),
+    },
     { path: "/:pathMatch(.*)*", component: () => import("../views/Error.vue") },
     {
       path: "/dashboard/v1",
