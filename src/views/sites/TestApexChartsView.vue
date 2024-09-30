@@ -1,154 +1,35 @@
 <template>
-  <h1>VueApexChart</h1>
-
+  <!--ApexLine--------------------------------------------->
   <div class="row">
+    <h2>ApexLine</h2>
     <div class="col-md-3">
-      <VueApexCharts
-        type="line"
-        :height="300"
-        :options="line.options"
-        :series="line.series"
-      ></VueApexCharts>
-    </div>
-    <div class="col-md-3">
-      <VueApexCharts
-        type="area"
-        :height="300"
-        :options="area.options"
-        :series="area.series"
-      ></VueApexCharts>
+      <ApexLine :width="w" :series="series"></ApexLine>
     </div>
   </div>
 </template>
-<script setup>
+
+<script lang="ts" setup>
+import type { ApexLineSeries } from "@/types/ray/apexCharts/apexCharts";
 import VueApexCharts from "vue3-apexcharts";
 
-//line------------------------------------------------------------
-const line = ref({
-  options: {
-    chart: {
-      id: "vuechart-example",
-    },
-    xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
-    },
-  },
-  series: [
-    {
-      name: "series-1",
-      data: [30, 40, 45, 50, 49, 60, 70, 91],
-    },
-  ],
-});
-//area------------------------------------------------------------
-const area = ref({
-  series: [
-    {
-      name: "STOCK ABC",
-      data: [1, 2, 3],
-    },
-  ],
-  options: {
-    chart: {
-      type: "area",
-      height: 350,
-      zoom: {
-        enabled: false,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "straight",
-    },
-
-    title: {
-      text: "Fundamental Analysis of Stocks",
-      align: "left",
-    },
-    subtitle: {
-      text: "Price Movements",
-      align: "left",
-    },
-    labels: ["a", "b", "c"],
-    xaxis: {
-      type: "string",
-    },
-    yaxis: {
-      opposite: true,
-    },
-    legend: {
-      horizontalAlign: "left",
-    },
-  },
-});
-
-//bar------------------------------------------------------------
-const bar = ref({
-  series: [
-    {
-      name: "Net Profit",
-      data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-    },
-    {
-      name: "Revenue",
-      data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
-    },
-    {
-      name: "Free Cash Flow",
-      data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
-    },
-  ],
-  options: {
-    chart: {
-      type: "bar",
-      height: 350,
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: "55%",
-        endingShape: "rounded",
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ["transparent"],
-    },
-    xaxis: {
-      categories: [
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-      ],
-    },
-    yaxis: {
-      title: {
-        text: "$ (thousands)",
-      },
-    },
-    fill: {
-      opacity: 1,
-    },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return "$ " + val + " thousands";
-        },
-      },
-    },
-  },
-});
+const w = ref(800);
+const h = ref(400);
+//事先定義好N條線結構
+let numLine = 3;
+let lines: ApexLineSeries[] = [];
+for (let lineIdx = 0; lineIdx < numLine; ++lineIdx) {
+  let line: ApexLineSeries = {
+    name: `line_${lineIdx}`,
+    data: [],
+  };
+  for (let i: number = 0; i < 10; ++i) {
+    line.data.push({
+      x: `199${i}`,
+      y: Math.floor(Math.random() * 100),
+    });
+  }
+  lines.push(line);
+}
+const series = ref<ApexLineSeries[]>(lines);
 </script>
 <style></style>
